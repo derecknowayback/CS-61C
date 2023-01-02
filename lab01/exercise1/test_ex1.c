@@ -36,6 +36,9 @@ int main(int argc, char **argv) {
     assert(dna_seq_2.T_count == 0);
 
     /* TODO: Think of a scenario that is not tested by the current test cases. Create one additional test case to test this scenario. */
+    DNA_sequence* dna_seq_null = NULL;
+    compute_nucleotide_occurrences(dna_seq_null);
+    assert(dna_seq_null == NULL);
 
     printf("Congrats! If you have made it to this line, your Part 2 Test cases are all passing!\n");
 
