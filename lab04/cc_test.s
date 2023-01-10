@@ -50,8 +50,10 @@ next_test:
 pow:
     # BEGIN PROLOGUE
     # FIXME Need to save the calle saved register(s)
+    addi sp, sp, -4 # sp = sp - 4
+    sw s0, 0(sp) # 
     # END PROLOGUE
-    li s0, 1
+    li s0, 1 # 动了s0
 pow_loop:
     beq a1, zero, pow_end
     mul s0, s0, a0
@@ -61,6 +63,8 @@ pow_end:
     mv a0, s0
     # BEGIN EPILOGUE
     # FIXME Need to restore the calle saved register(s)
+    lw s0, 0(sp) # 
+    addi sp, sp,4 # sp =sp + 4
     # END EPILOGUE
     ret
 
@@ -73,8 +77,12 @@ pow_end:
 inc_arr:
     # BEGIN PROLOGUE
     # FIXME What other registers need to be saved?
-    addi sp, sp, -4
+    # 用到了 callee: s0 s1 
+    #       caller: 
+    addi sp, sp, -12
     sw ra, 0(sp)
+    sw s0, 4(sp) # 
+    sw s1, 8(sp) # 
     # END PROLOGUE
     mv s0, a0 # Copy start of array to saved register
     mv s1, a1 # Copy length of array to saved register
@@ -86,10 +94,12 @@ inc_arr_loop:
     # Prepare to call helper_fn
     #
     # FIXME Add code to preserve the value in t0 before we call helper_fn
-    # Also ask yourself this: why don't we need to preserve t1?
-    #
+    # Also ask yourself this: why don't we need to preserve t1? 因为t1接下来没有使用，只有赋值,但是t0也没有被改变啊?
+    # sw t0, 12(sp) # 
     jal helper_fn
     # FIXME Restore t0
+    # lw t0, 12(sp) # 
+    
     # Finished call for helper_fn
     addi t0, t0, 1 # Increment counter
     j inc_arr_loop
@@ -97,7 +107,9 @@ inc_arr_end:
     # BEGIN EPILOGUE
     # FIXME What other registers need to be restored?
     lw ra, 0(sp)
-    addi sp, sp, 4
+    lw s0, 4(sp) # 
+    lw s1, 8(sp) #
+    addi sp, sp, 12
     # END EPILOGUE
     ret
 
@@ -112,12 +124,18 @@ inc_arr_end:
 helper_fn:
     # BEGIN PROLOGUE
     # FIXME: YOUR CODE HERE
+    # callee: s0
+    # caller: 不用管
+    addi sp, sp, -4 # sp = sp - 4
+    sw s0, 0(sp) # 
     # END PROLOGUE
     lw t1, 0(a0)
     addi s0, t1, 1
     sw s0, 0(a0)
     # BEGIN EPILOGUE
     # FIXME: YOUR CODE HERE
+    lw s0, 0(sp) # 
+    addi sp, sp, 4
     # END EPILOGUE
     ret
 
