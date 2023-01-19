@@ -10,7 +10,7 @@ import traceback
 
 lab_dir_path = os.getcwd()
 tests_dir_path = os.path.join(os.getcwd(), "tests")
-logisim_path = os.path.join(os.getcwd(),"..", "tools", "logisim-evolution.jar")
+logisim_path = os.path.join(os.getcwd(),"..", "tools", "logisim-evolution-latest.jar")
 
 # logisim_env = os.environ.copy()
 # logisim_env["CS61C_TOOLS_ARGS"] = logisim_env.get("CS61C_TOOLS_ARGS", "") + " -q"
